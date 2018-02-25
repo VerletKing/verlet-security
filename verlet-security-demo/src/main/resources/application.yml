@@ -1,0 +1,14 @@
+server:
+  port: 8080
+  display-name: security
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/security?characterEncoding=utf-8&userUnicode=true&useSSL=true
+    username: root
+    password: root
+  session:
+    store-type: none
+
+verlet.security.browser.loginPage: /signIn-demo.html
+verlet.security.browser.loginType: REDIRECT
