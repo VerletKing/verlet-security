@@ -10,5 +10,12 @@ spring:
   session:
     store-type: none
 
-verlet.security.browser.loginPage: /signIn-demo.html
-verlet.security.browser.loginType: REDIRECT
+verlet:
+  security:
+    validate:
+      imageCode:
+        verifySize: 4
+#        url: /user,/user/*
+    browser:
+#      loginPage: /signIn-demo.html
+      loginType: REDIRECT

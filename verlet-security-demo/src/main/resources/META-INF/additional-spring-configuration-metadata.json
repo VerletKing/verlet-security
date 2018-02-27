@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "verlet.security.browser.loginPage",
+      "type": "java.lang.String",
+      "description": "Description for verlet.security.browser.loginPage."
+    },
+    {
+      "name": "verlet.security.browser.loginType",
+      "type": "java.lang.String",
+      "description": "Description for verlet.security.browser.loginType."
+    },
+    {
+      "name": "verlet.security.validate.imageCode.height",
+      "type": "java.lang.String",
+      "description": "Description for verlet.security.validate.imageCode.height."
+    },
+    {
+      "name": "verlet.security.validate.imageCode.url",
+      "type": "java.lang.String",
+      "description": "Description for verlet.security.validate.imageCode.url."
+    }
+  ]
+}

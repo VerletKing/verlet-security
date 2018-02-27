@@ -22,7 +22,7 @@ import java.io.IOException;
  */
 @Component
 @Slf4j
-public class VerletAuthenctiationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+public class VerletAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -31,7 +31,9 @@ public class VerletAuthenctiationFailureHandler extends SimpleUrlAuthenticationF
     private SecurityProperties securityProperties;
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        AuthenticationException exception) throws IOException, ServletException {
         logger.info("登录失败");
 
         if (LoginResponseType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
