@@ -22,7 +22,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static org.verlet.core.validator.code.ValidateCodeProcessor.SESSION_KEY_PREFIX;
 
@@ -113,16 +116,15 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
     }
 
     private ValidateCodeType getValidateCodeType(HttpServletRequest request) {
-        ValidateCodeType result = null;
-        if(StringUtils.equalsIgnoreCase(request.getMethod(),"get")){
+        if(StringUtils.equalsIgnoreCase(request.getMethod(),"post")){
             Set<String> urls = urlMap.keySet();
             for(String url:urls){
                 if(pathMatcher.match(url,request.getRequestURI())){
-                    result = urlMap.get(url);
+                    return  urlMap.get(url);
                 }
             }
         }
-        return result;
+        return null;
     }
 
 }

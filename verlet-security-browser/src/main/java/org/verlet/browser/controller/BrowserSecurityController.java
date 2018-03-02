@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.verlet.core.common.ServerResponse;
+import org.verlet.core.properties.SecurityConstants;
 import org.verlet.core.properties.SecurityProperties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +41,7 @@ public class BrowserSecurityController {
      * @param response
      * @return
      */
-    @RequestMapping("/authentication/require")
+    @RequestMapping(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     public ServerResponse<String> requestAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
         SavedRequest savedRequest = requestCache.getRequest(request,response);

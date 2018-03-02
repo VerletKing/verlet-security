@@ -8,7 +8,7 @@ import org.verlet.core.validator.code.properties.ValidateCodeType;
 import java.util.Map;
 
 /**
- * 根据type
+ * 根据type查找ValidateCodeProcessor实现
  *
  * @author verlet
  * @date 2018/3/1
