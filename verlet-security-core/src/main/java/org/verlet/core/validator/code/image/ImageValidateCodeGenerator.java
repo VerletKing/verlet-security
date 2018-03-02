@@ -1,14 +1,14 @@
-package org.verlet.core.validator.code;
+package org.verlet.core.validator.code.image;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.verlet.core.properties.SecurityProperties;
 import org.verlet.core.util.VerifyCodeUtils;
+import org.verlet.core.validator.code.ValidateCode;
+import org.verlet.core.validator.code.ValidateCodeGenerator;
 
-import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 
 /**
@@ -17,18 +17,18 @@ import java.awt.image.BufferedImage;
  */
 @Slf4j
 @Data
-public class ImageCodeGenerator implements ValidateCodeGenerator {
+public class ImageValidateCodeGenerator implements ValidateCodeGenerator {
 
     private SecurityProperties securityProperties;
 
     @Override
-    public ImageCode generate(HttpServletRequest request) {
+    public ValidateCode generate(ServletWebRequest request) {
         //生成随机字串
         String verifyCode = VerifyCodeUtils.generateVerifyCode(securityProperties.getValidate().getImageCode().getVerifySize());
         log.info("code={}", verifyCode.toLowerCase());
         //生成图片
-        int w = ServletRequestUtils.getIntParameter(request, "width", securityProperties.getValidate().getImageCode().getWidth());
-        int h = ServletRequestUtils.getIntParameter(request, "height",securityProperties.getValidate().getImageCode().getHeight());
+        int w = ServletRequestUtils.getIntParameter(request.getRequest(), "width", securityProperties.getValidate().getImageCode().getWidth());
+        int h = ServletRequestUtils.getIntParameter(request.getRequest(), "height",securityProperties.getValidate().getImageCode().getHeight());
         BufferedImage image = VerifyCodeUtils.getImage(w, h, verifyCode);
         return new ImageCode(image, verifyCode, securityProperties.getValidate().getImageCode().getExpireIn());
 

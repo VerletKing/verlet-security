@@ -1,5 +1,8 @@
 package org.verlet.core.validator.code;
 
+import org.springframework.web.context.request.ServletWebRequest;
+import org.verlet.core.validator.code.ValidateCode;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -8,5 +11,5 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface ValidateCodeGenerator {
 
-    ImageCode generate(HttpServletRequest request);
+    ValidateCode generate(ServletWebRequest request);
 }

@@ -39,6 +39,7 @@ public class VerletAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(objectMapper.writeValueAsString(authentication));
         }else{
+            response.setContentType("text/html;charset=UTF-8");
             super.onAuthenticationSuccess(request,response,authentication);
         }
     }

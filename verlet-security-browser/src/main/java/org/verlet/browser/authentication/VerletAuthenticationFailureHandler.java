@@ -42,6 +42,7 @@ public class VerletAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             response.getWriter().write(objectMapper.writeValueAsString(ServerResponse.createByErrorCodeMessage(
                     HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage())));
         } else {
+            response.setContentType("text/html;charset=UTF-8");
             super.onAuthenticationFailure(request, response, exception);
         }
     }

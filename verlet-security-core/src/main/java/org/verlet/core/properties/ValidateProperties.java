@@ -10,5 +10,8 @@ import lombok.Data;
  */
 @Data
 public class ValidateProperties {
+
     private ImageCodeProperties imageCode = new ImageCodeProperties();
+
+    private SmsCodeProperties smsCode = new SmsCodeProperties();
 }

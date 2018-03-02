@@ -1,4 +1,4 @@
-package org.verlet.core.validator.exception;
+package org.verlet.core.validator.code.exception;
 
 import org.springframework.security.core.AuthenticationException;
 

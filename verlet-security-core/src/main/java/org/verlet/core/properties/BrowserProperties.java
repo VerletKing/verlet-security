@@ -10,6 +10,8 @@ import lombok.Data;
 public class BrowserProperties {
     private String loginPage = "/signIn.html";
 
+    private String signUpUrl = "/singUp.html";
+
     private LoginResponseType loginType = LoginResponseType.JSON;
 
     private int rememberMeSeconds = 3600;
