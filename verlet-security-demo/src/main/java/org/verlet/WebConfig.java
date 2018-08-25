@@ -18,12 +18,16 @@ public class WebConfig extends WebMvcConfigurerAdapter{
     @Autowired
     private TimeInterceptor timeInterceptor;
 
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(timeInterceptor);
-//        super.addInterceptors(registry);
-//    }
-/**
+    /**
+     * 添加拦截器
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(timeInterceptor).addPathPatterns("/**").excludePathPatterns("/testException");
+        super.addInterceptors(registry);
+    }
+
+    /**
      * 加入第三方的filter
      */
 //    @Bean

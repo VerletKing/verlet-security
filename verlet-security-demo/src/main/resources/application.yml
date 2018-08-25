@@ -19,3 +19,7 @@ verlet:
     browser:
 #      loginPage: /signIn-demo.html
       loginType: REDIRECT
+    social:
+      qq:
+        appId:
+        appSecret:

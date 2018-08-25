@@ -1,15 +1,14 @@
 package org.verlet.filter;
 
-import org.springframework.stereotype.Component;
-
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
 /**
  * @author verlet
  * @date 2018/2/16
  */
-//@Component
+@WebFilter
 public class TimeFilter implements Filter {
 
     @Override

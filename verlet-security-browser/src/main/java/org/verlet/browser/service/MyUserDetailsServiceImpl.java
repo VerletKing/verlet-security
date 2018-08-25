@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.social.security.SocialUser;
+import org.springframework.social.security.SocialUserDetails;
+import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,7 +21,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
-public class MyUserDetailsServiceImpl implements UserDetailsService {
+public class MyUserDetailsServiceImpl implements UserDetailsService ,SocialUserDetailsService{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -28,5 +31,12 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
         log.info("登录的用户名：{}", username);
         log.info("加密后的密码：{}", passwordEncoder.encode("123456"));
         return new User(username, passwordEncoder.encode("123456"), AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+    }
+
+    @Override
+    public SocialUserDetails loadUserByUserId(String userId) throws UsernameNotFoundException {
+        log.info("登录的用户名：{}", userId);
+        return new SocialUser(userId, passwordEncoder.encode("123456"), AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+
     }
 }

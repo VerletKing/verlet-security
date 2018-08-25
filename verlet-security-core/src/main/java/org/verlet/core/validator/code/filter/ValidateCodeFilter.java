@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.verlet.core.validator.code.ValidateCodeProcessor.SESSION_KEY_PREFIX;
 
@@ -60,14 +61,14 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
     /**
      * 存放所有需要校验验证码的URL
      */
-    private Map<String,ValidateCodeType> urlMap = new HashMap<>();
+    private Map<String, ValidateCodeType> urlMap = new HashMap<>();
 
     /**
      * 验证请求URL与配置的URL是否匹配的工具类
      */
     private AntPathMatcher pathMatcher = new AntPathMatcher();
 
-    public static final String SESSION_KEY = SESSION_KEY_PREFIX+"IMAGE";
+    public static final String SESSION_KEY = SESSION_KEY_PREFIX + "IMAGE";
 
     /**
      * 这个方法将在所有的属性被初始化后调用。
@@ -80,35 +81,36 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
     public void afterPropertiesSet() throws ServletException {
         super.afterPropertiesSet();
 
-       urlMap.put(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM,ValidateCodeType.IMAGE);
-       addUrlToMap(securityProperties.getValidate().getImageCode().getUrl(),ValidateCodeType.IMAGE);
+        urlMap.put(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM, ValidateCodeType.IMAGE);
+        addUrlToMap(securityProperties.getValidate().getImageCode().getUrl(), ValidateCodeType.IMAGE);
 
-       urlMap.put(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,ValidateCodeType.SMS);
-       addUrlToMap(securityProperties.getValidate().getSmsCode().getUrl(),ValidateCodeType.IMAGE);
+        urlMap.put(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE, ValidateCodeType.SMS);
+        addUrlToMap(securityProperties.getValidate().getSmsCode().getUrl(), ValidateCodeType.IMAGE);
     }
 
     /**
      * 将系统中配置的需要校验验证码的URL根据校验的类型放入map
+     *
      * @param urlString
      * @param type
      */
-    protected void addUrlToMap(String urlString,ValidateCodeType type){
-        if(StringUtils.isNotBlank(urlString)){
+    protected void addUrlToMap(String urlString, ValidateCodeType type) {
+        if (StringUtils.isNotBlank(urlString)) {
             Arrays.asList(StringUtils.splitByWholeSeparatorPreserveAllTokens(urlString, ","))
-                    .forEach(url-> urlMap.put(url,type));
+                    .forEach(url -> urlMap.put(url, type));
         }
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         ValidateCodeType type = getValidateCodeType(request);
-        if(type!=null){
-            log.info("校验请求（{}）中的验证码，验证码类型{}",request.getRequestURI(),type);
-            try{
-                validateCodeProcessorHolder.findValidateCodeProcessor(type).validate(new ServletWebRequest(request,response));
+        if (type != null) {
+            log.info("校验请求（{}）中的验证码，验证码类型{}", request.getRequestURI(), type);
+            try {
+                validateCodeProcessorHolder.findValidateCodeProcessor(type).validate(new ServletWebRequest(request, response));
                 log.info("验证码校验通过");
-            }catch (ValidateCodeException exception){
-                authenticationFailureHandler.onAuthenticationFailure(request,response,exception);
+            } catch (ValidateCodeException exception) {
+                authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
                 return;
             }
         }
@@ -116,15 +118,16 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
     }
 
     private ValidateCodeType getValidateCodeType(HttpServletRequest request) {
-        if(StringUtils.equalsIgnoreCase(request.getMethod(),"post")){
+        AtomicReference<ValidateCodeType> result = new AtomicReference<>();
+        if (StringUtils.equalsIgnoreCase(request.getMethod(), "post")) {
             Set<String> urls = urlMap.keySet();
-            for(String url:urls){
-                if(pathMatcher.match(url,request.getRequestURI())){
-                    return  urlMap.get(url);
+            urls.forEach(url -> {
+                if (pathMatcher.match(url, request.getRequestURI())) {
+                    result.set(urlMap.get(url));
                 }
-            }
+            });
         }
-        return null;
+        return result.get();
     }
 
 }
