@@ -1,12 +1,10 @@
 package org.verlet;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.verlet.filter.TimeFilter;
 import org.verlet.filter.TimeInterceptor;
 
 /**
@@ -14,6 +12,7 @@ import org.verlet.filter.TimeInterceptor;
  * @date 2018/2/17
  */
 @Configuration
+@ServletComponentScan // @WebFilter使用
 public class WebConfig extends WebMvcConfigurerAdapter{
     @Autowired
     private TimeInterceptor timeInterceptor;
